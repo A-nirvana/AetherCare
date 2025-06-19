@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Sidebar from '../components/Sidebar';
 import { Montserrat } from 'next/font/google';
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['600'] });
@@ -67,8 +66,7 @@ export default function HealthTipsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-green-50">
-      <Sidebar />
+    <div className="grow min-h-screen bg-green-50">
       <main className="flex-1 p-8 space-y-6 overflow-auto">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
