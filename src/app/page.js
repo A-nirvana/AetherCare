@@ -20,10 +20,11 @@ export default function Home() {
             <ClimateCard />
           </div>
           <div className="w-full lg:w-1/3">
-        <DoctorTipsWeb />
-        <BotpressChat />
       </div>
+      <DoctorTipsWeb className=""/>
+      <BotpressChat />
       </div>
+
     </div>
   );
 }
