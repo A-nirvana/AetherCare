@@ -1,16 +1,11 @@
 'use client';
 
 import { Mail, Phone, MapPin } from 'lucide-react';
-import Sidebar from '../components/Sidebar'; // ✅ Adjust path as needed
 import { motion } from 'framer-motion';
 
 export default function ContactPage() {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-green-50 to-white">
-      {/* Sidebar */}
-      <Sidebar />
-
-      {/* Main Contact Section */}
+    <div className="grow min-h-screen bg-gradient-to-br from-green-50 to-white">
       <main className="flex-1 py-12 px-6 md:px-12 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: -50 }}

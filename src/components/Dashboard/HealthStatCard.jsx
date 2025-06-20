@@ -1,10 +1,15 @@
-import { FaHeartbeat, FaTemperatureHigh, FaLungs, FaRunning } from "react-icons/fa";
+import {
+  FaHeartbeat,
+  FaTemperatureHigh,
+  FaLungs,
+  FaRunning,
+} from "react-icons/fa";
 import { BsCapsule } from "react-icons/bs";
-import { Mulish } from 'next/font/google';
+import { Mulish } from "next/font/google";
 
 const mulish = Mulish({
-  subsets: ['latin'],
-  weight: ['400', '600', '700', '900'], // You can adjust the weights as needed
+  subsets: ["latin"],
+  weight: ["400", "600", "700", "900"], // You can adjust the weights as needed
 });
 const iconMap = {
   BMI: <FaRunning size={22} className="text-orange-500" />,
@@ -30,17 +35,48 @@ const arcColorMap = {
 const HealthStatCard = ({ label, value, unit, status }) => {
   const icon = iconMap[label] || <BsCapsule size={20} />;
   const badgeClass = badgeColorMap[label] || "bg-gray-100 text-gray-500";
-  const arcColor = arcColorMap[label] || "#9ca3af";
+  const maxValues = {
+    BPM: 150, // Example: Max BPM for the arc
+    SpO2: 102, // SpO2 is already %
+    Temperature: 120, // Example: Max temp (Fahrenheit)
+    BMI: 40, // Example: Max BMI
+    // Add other metrics if you want progress arcs for them
+  };
+
+  const maxValue = maxValues[label] || 100; // Default to 100 if not specified
+  const normalizedValue = Math.min(Math.max(0, parseFloat(value)), maxValue); // Ensure value is within 0 and maxValue
+
+  // 2. Calculate SVG arc properties
+  const radius = 50;
+  const circumference = 2 * Math.PI * radius; // Approx 314.159
+  const progressPercentage = normalizedValue / maxValue;
+  const strokeDashoffset = circumference - progressPercentage * circumference;
+
+  const arcColor =
+    status === "Normal" ||
+    status === "Healthy" ||
+    status === "Good" ||
+    status === "Stable"
+      ? "#22C55E" // Green
+      : status === "Warning" || status === "Elevated" || status === "Low"
+      ? "#F59E0B" // Orange
+      : "#EF4444"; // Red (for Critical, High, etc.)
 
   return (
     <div className="w-[200px] h-[260px] bg-white rounded-xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.10)] p-4 flex flex-col items-center justify-between">
       {/* Header */}
       <div className="w-full space-y-2 items-center">
         <div className="flex space-x-3">
-        <div className="bg-gray-100 p-2 rounded-lg">{icon}</div>
-        <span className={`${mulish.className} text-gray-700 font-[600] text-base pt-2`}>{label}</span>
+          <div className="bg-gray-100 p-2 rounded-lg">{icon}</div>
+          <span
+            className={`${mulish.className} text-gray-700 font-[600] text-base pt-2`}
+          >
+            {label}
+          </span>
         </div>
-        <span className={`text-xs px-2 py-1 rounded-md font-semibold ${badgeClass}`}>
+        <span
+          className={`text-xs px-2 py-1 rounded-md font-semibold ${badgeClass}`}
+        >
           {status}
         </span>
       </div>
@@ -65,10 +101,11 @@ const HealthStatCard = ({ label, value, unit, status }) => {
             stroke={arcColor}
             strokeWidth="10"
             fill="none"
-            strokeDasharray="240"
-            strokeDashoffset="60"
+            strokeDasharray={circumference} // Full circumference for the dash pattern
+            strokeDashoffset={strokeDashoffset} // Calculated offset based on value
             strokeLinecap="round"
-            transform="rotate(-90 60 60)"
+            transform="rotate(-90 60 60)" // Start from top
+            style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }} // Smooth transition
           />
         </svg>
 
