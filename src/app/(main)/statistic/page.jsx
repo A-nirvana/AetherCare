@@ -6,14 +6,6 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts"
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -110,11 +102,11 @@ export default function HealthChartComponent() {
   }
 
   return (
-    <Card className="grow w-full">
-      <CardHeader className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+    <div className="grow w-full p-6">
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6 mb-6">
         <div className="flex-1">
-          <CardTitle>Health Metrics</CardTitle>
-          <CardDescription>{descriptionMap[timeRange]}</CardDescription>
+          <div className="font-semibold text-2xl">Health Metrics</div>
+          <div>{descriptionMap[timeRange]}</div>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -139,8 +131,8 @@ export default function HealthChartComponent() {
             Monthly
           </Button>
         </div>
-      </CardHeader>
-      <CardContent>
+      </div>
+      <div>
         <ChartContainer config={chartConfig} className={"h-64 sm:h-[80vh]"}>
           <AreaChart
             accessibilityLayer
@@ -279,8 +271,8 @@ export default function HealthChartComponent() {
             />}
           </AreaChart>
         </ChartContainer>
-      </CardContent>
-      <CardFooter>
+      </div>
+      <div>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className="flex items-center gap-2 font-medium leading-none">
@@ -292,7 +284,7 @@ export default function HealthChartComponent() {
             </div>
           </div>
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   )
 }

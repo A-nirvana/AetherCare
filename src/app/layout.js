@@ -1,10 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Montserrat } from 'next/font/google';
-import Sidebar from "@/components/Sidebar";
-import { SocketProvider } from "@/context/SocketContext";
+import { Montserrat } from "next/font/google";
+import { UserProvider } from "@/context/UserContext";
 
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '700'] });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +22,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-
     <html lang="en">
       <head>
         <link
@@ -32,12 +30,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex bg-green-50`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Sidebar />
-        <SocketProvider>
-        {children}
-        </SocketProvider>
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
