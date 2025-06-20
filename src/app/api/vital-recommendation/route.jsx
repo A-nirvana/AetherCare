@@ -7,7 +7,12 @@ export async function POST(req) {
   try {
     const { bmi, temperature, bpm, spo2 } = await req.json();
 
-    if (bmi === undefined || temperature === undefined || bpm === undefined || spo2 === undefined) {
+    if (
+      bmi === undefined ||
+      temperature === undefined ||
+      bpm === undefined ||
+      spo2 === undefined
+    ) {
       return new Response("Missing vital parameters", { status: 400 });
     }
 
@@ -33,10 +38,10 @@ Guidelines:
 
 `;
 
-const result = await ai.models.generateContent({
-    model: "gemini-2.0-flash", // ✅ fixed here
-    contents: [{ parts: [{ text: prompt }] }],
-  });
+    const result = await ai.models.generateContent({
+      model: "gemini-2.0-flash", // ✅ fixed here
+      contents: [{ parts: [{ text: prompt }] }],
+    });
 
     const text = result.response.text();
 

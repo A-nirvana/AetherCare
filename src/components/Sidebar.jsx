@@ -9,7 +9,7 @@ const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '900'] });
 
 const navItems = [
   { name: 'Dashboard', href: '/' },
-  { name: 'Statistics', href: 'src/app/pages/statistics.jsx' },
+  { name: 'Statistics', href: '/statistic' },
   { name: 'Health Tips', href: '/health' },
   { name: 'Contact Us', href: '/contact' },
   { name: 'Logout', href: '/login' },
@@ -19,7 +19,7 @@ const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="bg-[#0fc100] text-white w-60 min-h-screen p-6 rounded-tr-3xl rounded-3xl">
+    <div className="bg-[#0fc100] text-white w-60 min-h-screen p-6 rounded-r-3xl">
       <h2 className={`${montserrat.className} text-2xl mb-20 mt-5 font-[600]`}>AetherCare</h2>
       <ul className="space-y-5 font-medium">
         {navItems.map(({ name, href }) => {

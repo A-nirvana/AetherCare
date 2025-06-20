@@ -1,14 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Sparkles } from "lucide-react";
+
+const useThrottledCallback = (callback, delay) => {
+  const throttleRef = useRef(false);
+  const timeoutRef = useRef(null);
+
+  return useCallback((...args) => {
+    if (!throttleRef.current) {
+      callback(...args);
+      throttleRef.current = true;
+      timeoutRef.current = setTimeout(() => {
+        throttleRef.current = false;
+      }, delay);
+    }
+  }, [callback, delay]);
+};
+
+// Custom hook to throttle the execution of a useEffect
+const useThrottledEffect = (callback, dependencies, delay) => {
+  const throttledCallback = useThrottledCallback(callback, delay);
+
+  useEffect(() => {
+    throttledCallback();
+  }, dependencies);
+};
+
 
 function DoctorTipsWeb({ bmi = 24.5, temperature = 98.6, bpm = 76, spo2 = 98 }) {
   const [tips, setTips] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  useThrottledEffect(() => {
     const prompt = `
 You are a health assistant AI. Based on the following vitals:
 - BMI: ${bmi}
@@ -45,9 +70,9 @@ Keep each insight to 1 sentence.
         setTips([{ title: "", content: "Unable to fetch tips." }]);
         setLoading(false);
       });
-  }, [bmi, temperature, bpm, spo2]);
+  }, [bmi, temperature, bpm, spo2],30000);
 
-  return (
+  return (  
     <div className="bg-white border border-green-200 rounded-2xl shadow-lg p-6 w-full h-[300px] mt-5">
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="text-green-600" />
