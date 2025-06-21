@@ -5,6 +5,7 @@ import { SocketProvider } from "@/context/SocketContext";
 import { useUser } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import FullPageLoader from "../loading";
 
 export default function MainLayout({ children }) {
   const router = useRouter();
@@ -16,14 +17,10 @@ export default function MainLayout({ children }) {
     }
   }, [user.isLoading, user.isAuthenticated, router]);
   if (user.isLoading) {
-    return <div className="p-4 text-center">Loading...</div>;
+    return <FullPageLoader/>
   }
   if (!user.isAuthenticated) {
-    return (
-      <div className="p-4 text-center">
-        You are not authenticated. Please log in.
-      </div>
-    );
+    return (<FullPageLoader />);
   }
   return (
     <div className="flex bg-green-50">

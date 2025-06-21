@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { HeartPulse, Siren, Stethoscope, Sparkles, Mic } from 'lucide-react';
+import Link from 'next/link';
 
 const NavBar = () => (
   <motion.nav
@@ -42,7 +43,7 @@ const Hero = () => {
         <p className="text-lg md:text-2xl text-green-700 mt-6 mb-10 max-w-2xl mx-auto">
           AI-powered IoT for real-time health alerts, emergency response, and predictive care.
         </p>
-        <a href="/login" className="inline-block bg-green-500 hover:bg-green-400 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all shadow-lg">Start Your Journey</a>
+        <Link href="/dashboard" className="inline-block bg-green-500 hover:bg-green-400 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all shadow-lg">Start Your Journey</Link>
       </motion.div>
     </section>
   );
