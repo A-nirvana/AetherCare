@@ -14,26 +14,34 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_SOCKET_URL}/api/rtdb/all`
-        );
-        const data = res.data.data.sensorData;
-        const latestData = getLastObjectByKey(data);
-        setHealthData(latestData);
-      } catch (err) {
-        console.error("Failed to fetch health data:", err);
-        setError("Failed to load health data. Please try again.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     try {
+  //       const res = await axios.get(
+  //         `${process.env.NEXT_PUBLIC_SOCKET_URL}/api/rtdb/all`
+  //       );
+  //       const data = res.data.data.sensorData;
+  //       const latestData = getLastObjectByKey(data);
+  //       setHealthData(latestData);
+  //     } catch (err) {
+  //       console.error("Failed to fetch health data:", err);
+  //       setError("Failed to load health data. Please try again.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
 
-    fetchData();
+  //   fetchData();
+  // }, []);
+  useEffect(() => {
+    setHealthData({
+      BPM: 72,
+      SpO2: 96,
+      DHT_Temp: 36.8,
+    });
+    setIsLoading(false);
   }, []);
 
   // Use useMemo to re-calculate stats only when healthData changes
@@ -61,25 +69,26 @@ export default function Home() {
     };
 
     return [
-      { label: "BMI", value: userData.user.bmi?userData.user.bmi:"--", unit: "", status: "Healthy" },
+      // { label: "BMI", value: userData.user.bmi?userData.user.bmi:"--", unit: "", status: "Healthy" },
+      { label: "BMI", value: userData?.user?.bmi ?? "--", unit: "", status: "Healthy" },
       { label: "Temperature", value: healthData.DHT_Temp ? (healthData.DHT_Temp * 9/5 + 32).toFixed(1) : "--", unit: "°F", status: getTempStatus(healthData.DHT_Temp) }, // Convert C to F
       { label: "BPM", value: healthData.BPM, unit: "BPM", status: getBPMStatus(healthData.BPM) },
       { label: "SpO2", value: healthData.SpO2, unit: "%", status: getSpO2Status(healthData.SpO2) },
     ];
-  }, [healthData, userData]); 
+  }, [healthData, userData]);
 
-  
-  useEffect(() => {
-    if (!socket || !socket.isConnected) return;
-    socket.socket.on("sensorData", (obj) => {
-      console.log("Received health data update:", obj);
-      setHealthData(obj.data);
-    });
-    return () => {
-      socket.socket.off("healthDataUpdate");
-    };
-  }, [socket]);
-  
+
+  // useEffect(() => {
+  //   if (!socket || !socket.isConnected) return;
+  //   socket.socket.on("sensorData", (obj) => {
+  //     console.log("Received health data update:", obj);
+  //     setHealthData(obj.data);
+  //   });
+  //   return () => {
+  //     socket.socket.off("healthDataUpdate");
+  //   };
+  // }, [socket]);
+
   return (
       <div className="flex-1 p-6 bg-gray-50 min-h-screen">
         <Header />

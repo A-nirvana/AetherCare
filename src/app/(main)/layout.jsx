@@ -10,21 +10,21 @@ export default function MainLayout({ children }) {
   const router = useRouter();
   const user = useUser();
 
-  useEffect(() => {
-    if (!user.isLoading && !user.isAuthenticated) {
-      router.push("/login");
-    }
-  }, [user.isLoading, user.isAuthenticated, router]);
-  if (user.isLoading) {
-    return <div className="p-4 text-center">Loading...</div>;
-  }
-  if (!user.isAuthenticated) {
-    return (
-      <div className="p-4 text-center">
-        You are not authenticated. Please log in.
-      </div>
-    );
-  }
+  // useEffect(() => {
+  //   if (!user.isLoading && !user.isAuthenticated) {
+  //     router.push("/login");
+  //   }
+  // }, [user.isLoading, user.isAuthenticated, router]);
+  // if (user.isLoading) {
+  //   return <div className="p-4 text-center">Loading...</div>;
+  // }
+  // if (!user.isAuthenticated) {
+  //   return (
+  //     <div className="p-4 text-center">
+  //       You are not authenticated. Please log in.
+  //     </div>
+  //   );
+  // }
   return (
     <div className="flex bg-green-50">
       <Sidebar />
