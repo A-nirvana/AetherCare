@@ -8,7 +8,7 @@ const Header = () => {
     return (
       <div className="flex justify-between items-start mb-6">
         <div className="flex space-x-5">
-          <img src="https://res.cloudinary.com/dmhbmurzw/image/upload/v1748928745/Ellipse_1_ct2kb9.png" alt="Image" />
+          <img src="https://res.cloudinary.com/dmhbmurzw/image/upload/v1750485270/12259373_oqms18.png" alt="Image" className="w-15 h-15"/>
           <div>
           <h1 className={`${oleo.className} text-2xl font-semibold text-gray-800`}>Good Day, AetherCare</h1>
           <p className="text-sm text-gray-500 mt-1">Medical ID: 2025191098472</p>
