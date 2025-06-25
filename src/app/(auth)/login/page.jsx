@@ -1,153 +1,136 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, Lock, User, ShieldUser } from "lucide-react";
-import { useUser } from "@/context/UserContext";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Mail, Lock, User, ShieldUser } from 'lucide-react';
+import { useUser } from '@/context/UserContext';
+import { Urbanist, DM_Sans } from 'next/font/google';
+
+const headingFont = Urbanist({ subsets: ['latin'], weight: ['600', '700'] });
+const bodyFont = DM_Sans({ subsets: ['latin'], weight: ['400', '500'] });
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
   const user = useUser();
 
-  const hanldeSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!userId || !password) {
-      alert("Please fill in all fields");
-      return;
-    }
-    // Only login for now
-    if (isLogin) {
-      user.login({ userId, password })
-    }
-    else {
-      console.log("Registering with User ID:", userId, "and Password:", password);
-    }
-    setUserId("");
-    setPassword("");
+    if (!userId || !password) return alert('Please fill in all fields');
+    if (isLogin) user.login({ userId, password });
+    else console.log('Register:', userId, password);
+    setUserId('');
+    setPassword('');
   };
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-[#c6f6d5] via-[#9ae6b4] to-[#68d391] flex items-center justify-center px-4">
+    <div className="relative min-h-screen bg-gradient-to-tr from-[#f5fff5] via-[#ebfbee] to-[#c7f6d4] flex items-center justify-center px-4 overflow-hidden">
+      <div className="absolute w-[500px] h-[500px] bg-green-300/30 rounded-full blur-3xl top-[-100px] left-[-100px] animate-pulse" />
+      <div className="absolute w-[300px] h-[300px] bg-green-200/30 rounded-full blur-2xl bottom-[-100px] right-[-80px] animate-bounce" />
+
       <motion.div
-        className="w-full max-w-md bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-8 space-y-6 border border-green-200"
-        initial={{ opacity: 0, y: 30 }}
+        className="relative z-10 w-full max-w-md bg-white/70 backdrop-blur-md border border-green-100 rounded-3xl p-8 shadow-2xl"
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex justify-center space-x-2 mb-4">
+        <div className="flex justify-center gap-2 mb-6">
           <button
             onClick={() => setIsLogin(true)}
-            className={`px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition ${
               isLogin
-                ? "bg-green-600 text-white shadow-md"
-                : "bg-gray-200 text-gray-600"
+                ? 'bg-green-600 text-white shadow'
+                : 'bg-white text-green-600 border border-green-400'
             }`}
           >
             Login
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`px-5 py-2 text-sm font-semibold rounded-full transition-all duration-300 ${
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition ${
               !isLogin
-                ? "bg-green-600 text-white shadow-md"
-                : "bg-gray-200 text-gray-600"
+                ? 'bg-green-600 text-white shadow'
+                : 'bg-white text-green-600 border border-green-400'
             }`}
           >
             Register
           </button>
         </div>
 
-        <motion.h2
-          className="text-3xl font-bold text-center text-green-800 tracking-wide"
-          key={isLogin ? "login" : "signup"}
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
+        <h2
+          className={`text-center text-3xl sm:text-4xl font-bold text-green-800 ${headingFont.className}`}
         >
-          {isLogin ? "Login to Continue" : "Join AetherCare"}
-        </motion.h2>
-        {!isLogin && (
-          <motion.h2
-            className="text-lg font-bold text-center text-green-800 tracking-wide"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            You can register to get an AetherCare machine using this form.
-          </motion.h2>
-        )}
+          {isLogin ? 'Welcome Back' : 'Create AetherCare ID'}
+        </h2>
+        <p className={`text-center text-green-700 text-sm mt-2 ${bodyFont.className}`}>
+          {isLogin ? 'Login to access your dashboard' : 'Register to start tracking your health'}
+        </p>
 
-        <form className="space-y-4" onSubmit={hanldeSubmit}>
+        <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           {!isLogin && (
             <>
-              <div className="relative">
-                <User className="absolute left-3 top-3 text-green-400" />
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="w-full pl-10 pr-4 py-2 bg-green-50 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 text-green-400" />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full pl-10 pr-4 py-2 bg-green-50 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
-                  required
-                />
-              </div>
+              <Input icon={<User />} placeholder="Full Name" />
+              <Input icon={<Mail />} placeholder="Email" type="email" required />
             </>
           )}
 
           {isLogin && (
-            <div className="relative">
-                <ShieldUser className="absolute left-3 top-3 text-green-400" />
-                <input
-                  type="text"
-                  value={userId}
-                  onChange={(e) => setUserId(e.target.value)}
-                  placeholder="User ID (see your machine's ID)"
-                  className="w-full pl-10 pr-4 py-2 bg-green-50 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
-
-          )}
-
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 text-green-400" />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full pl-10 pr-4 py-2 bg-green-50 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
+            <Input
+              icon={<ShieldUser />}
+              placeholder="User ID (Machine ID)"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
               required
             />
-          </div>
+          )}
+
+          <Input
+            icon={<Lock />}
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
           <motion.button
-            whileTap={{ scale: 0.95 }}
+            whileTap={{ scale: 0.97 }}
             type="submit"
-            className="w-full bg-green-700 text-white py-2 rounded-xl font-semibold hover:bg-green-800 shadow-lg transition duration-300"
+            className="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-3 rounded-xl transition-all shadow-lg"
           >
-            {isLogin ? "Login" : "Sign Up"}
+            {isLogin ? 'Login' : 'Sign Up'}
           </motion.button>
         </form>
 
-        <div className="text-center text-sm text-gray-600 mt-2">
-          {isLogin ? "Don't have Aethercare?" : "Already a user?"}{" "}
+        <p className="text-center text-sm text-gray-600 mt-5">
+          {isLogin ? "Don't have an account?" : 'Already registered?'}{' '}
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="text-green-700 font-semibold hover:underline transition"
+            className="text-green-700 font-medium hover:underline"
           >
-            {isLogin ? "Register" : "Login"}
+            {isLogin ? 'Register' : 'Login'}
           </button>
-        </div>
+        </p>
       </motion.div>
+    </div>
+  );
+}
+
+function Input({ icon, placeholder, type = 'text', value, onChange, required }) {
+  return (
+    <div className="relative">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500">
+        {icon}
+      </div>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className="w-full pl-10 pr-4 py-3 bg-green-50 border border-green-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400 text-sm font-medium"
+      />
     </div>
   );
 }
