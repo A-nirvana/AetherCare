@@ -35,14 +35,6 @@ export default function Home() {
 
     fetchData();
   }, []);
-  // useEffect(() => {
-  //   setHealthData({
-  //     BPM: 72,
-  //     SpO2: 96,
-  //     DHT_Temp: 36.8,
-  //   });
-  //   setIsLoading(false);
-  // }, []);
 
   // Use useMemo to re-calculate stats only when healthData changes
   const stats = useMemo(() => {
@@ -71,7 +63,7 @@ export default function Home() {
     return [
       // { label: "BMI", value: userData.user.bmi?userData.user.bmi:"--", unit: "", status: "Healthy" },
       { label: "BMI", value: userData?.user?.bmi ?? "--", unit: "", status: "Healthy" },
-      { label: "Temperature", value: healthData.DHT_Temp ? (healthData.DHT_Temp * 9/5 + 32).toFixed(1) : "--", unit: "°F", status: getTempStatus(healthData.DHT_Temp) }, // Convert C to F
+      { label: "Temperature", value: healthData.Temperature ? (healthData.Temperature * 9/5 + 32).toFixed(1) : "--", unit: "°F", status: getTempStatus(healthData.Temperature) }, // Convert C to F
       { label: "BPM", value: healthData.BPM, unit: "BPM", status: getBPMStatus(healthData.BPM) },
       { label: "SpO2", value: healthData.SpO2, unit: "%", status: getSpO2Status(healthData.SpO2) },
     ];
