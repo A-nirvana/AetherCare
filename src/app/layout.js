@@ -1,5 +1,4 @@
 import "./globals.css";
-import { Montserrat } from "next/font/google";
 import { UserProvider } from "@/context/UserContext";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import LayoutWrapper from "@/components/LayoutWrapper";
