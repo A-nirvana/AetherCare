@@ -8,8 +8,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]});
 
 export const metadata = {
-  title: "AetherCare",
-  description: "Health intelligence and real-time vitals insight.",
+  title: "AetherCare | Your Personal Health Monitor",
+  description: "Your real-time health companion. Monitor vitals, track trends, and ensure safety with smart anomaly detection and immediate alerts. Peace of mind, at a glance.",
 };
 
 export default function RootLayout({ children }) {

@@ -1,27 +1,31 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import { useSocket } from "@/context/SocketContext"; // Assuming you have this context
-import toast from "react-hot-toast"; // For notifications
+import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useSocket } from "@/context/SocketContext";
+import toast from "react-hot-toast";
+import { useUser } from "./UserContext";
 
 const AlertContext = createContext();
 
 export const AlertProvider = ({ children }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const socket = useSocket(); // Get the socket instance from your SocketContext
+  const socket = useSocket();
+  const userData = useUser();
 
-  const [healthScore, setHealthScore] = useState(100);
-  const [healthData, setHealthData] = useState({})
+  const [healthScore, setHealthScore] = useState(
+    userData.user?.score || (Math.random() * 3 + 96).toFixed(2)
+  );
+  const [healthData, setHealthData] = useState({});
   const [muted, setMuted] = useState(false);
   const audioRef = useRef(null);
 
   // Determine if an alert should be active based on the health score
-  const isAlert = healthScore < 30;
+  const isAlert = healthScore < 30; // Example threshold for alert
 
   // Routes where the alert sound/popup should be suppressed
-  const silentRoutes = ['/login'];
+  const silentRoutes = ["/login"];
   const isSilent = silentRoutes.includes(pathname);
 
   // Logic to determine if the alert sound should play
@@ -35,7 +39,7 @@ export const AlertProvider = ({ children }) => {
     if (shouldPlaySound) {
       audio.loop = true;
       audio.currentTime = 0;
-      audio.play().catch(err => console.warn('Playback error:', err));
+      audio.play().catch((err) => console.warn("Playback error:", err));
     } else {
       audio.pause();
       audio.currentTime = 0;
@@ -50,10 +54,10 @@ export const AlertProvider = ({ children }) => {
 
       // Listen for the 'mlResult' event (or whatever event sends patient health data)
       const handleMlResult = (data) => {
-        console.log("Socket.IO: Patient health data received", data);
-        // Assuming 'data' contains a 'Score' property, similar to the staff side
-        if (data && typeof data.Score === 'number') {
+
+        if (data && typeof data.Score === "number") {
           setHealthScore(data.Score);
+          userData.user.score = data.Score;
           setHealthData(data);
           toast.success(`Health data updated! Score: ${data.Score}`); // Provide user feedback
         } else {
@@ -77,25 +81,33 @@ export const AlertProvider = ({ children }) => {
   const showPopup = isAlert && !isSilent;
 
   return (
-    <AlertContext.Provider value={{ healthScore, setHealthScore, muted, setMuted, isAlert }}>
+    <AlertContext.Provider
+      value={{ healthScore, setHealthScore, muted, setMuted, isAlert }}
+    >
       {children}
       <audio ref={audioRef} src="/alert.mp3" preload="auto" />
 
       {showPopup && (
-        <div className="fixed bottom-50 right-6 z-50 max-w-sm w-[340px] bg-white/90 border border-red-200 backdrop-blur-xl shadow-2xl rounded-2xl px-6 py-5 flex flex-col gap-4 animate-fade-in-up">
-          <div className="flex justify-between items-center">
+        <div className="fixed bottom-50 text-center right-6 z-50 max-w-sm w-[340px] bg-white/90 border border-red-200 backdrop-blur-3xl shadow-lg rounded-2xl px-6 py-5 flex flex-col gap-4 animate-fade-in-up">
+          <p className="text-red-700 font-bold text-base">
+            ⚠ Critical Health Alert
+          </p>
+          <div className="flex flex-col gap-4 justify-between items-center">
             <div>
-              <p className="text-red-700 font-bold text-base">⚠ Critical Health Alert</p>
-              <p className="text-sm text-red-500 mt-1">Your health score is critically low.</p>
+              <p className="text-sm text-red-500 mt-1">
+                Your health score is critically low.
+              </p>
             </div>
-            {healthData && healthData.Alert && <div className="bg-red-600 text-white rounded-full px-4 py-2 font-bold text-lg shadow-md">
-              {healthData.Alert} <br/>
-              {healthData.Descp}
-            </div>}
+            {healthData && healthData.Alert && (
+              <div className="bg-red-500 animate-pulse text-center text-white w-full rounded-lg px-4 py-2 font-bold shadow-md">
+                {healthData.Alert} <br />
+                {healthData.Descp}
+              </div>
+            )}
           </div>
 
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push("/dashboard")}
             className="mt-2 w-full bg-red-600 hover:bg-red-700 text-white text-sm py-2.5 rounded-lg font-semibold transition-all shadow"
           >
             Go to Dashboard
