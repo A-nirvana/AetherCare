@@ -60,34 +60,34 @@ All data is captured by the wearable and pushed to Firebase, where it's processe
 
 Here’s a visual representation of how the entire AetherCare system works:
 
-     ┌──────────────────────┐
-     │   Wearable Device    │
-     │ (ESP8266 + Sensors)  │
-     └────────┬─────────────┘
-              │ Wi-Fi
-              ▼
-     ┌──────────────────────┐
-     │  Firebase Realtime   │
-     │      Database        │
-     └────────┬─────────────┘
-              │
-  ┌───────────▼────────────┐
-  │                        │
-  │  Backend Services      │
-  │ (Node.js + Flask ML)   │
-  └────────┬──────┬────────┘
-           │      │
- ┌─────────▼─┐  ┌─▼──────────┐
- │ Prediction│  │ Alert Engine│
- │  (LSTM)   │  │ (Twilio)    │
- └───────────┘  └────────────┘
-           │
- ┌─────────▼────────────────────────────┐
- │     AetherCare Dashboard (Next.js)   │
- ├──────────────────────────────────────┤
- │  - User View                         │
- │  - Responder View                    │
- └──────────────────────────────────────┘
++------------------------+
+|   Wearable Device      |
+| (ESP8266 + Sensors)    |
++-----------+------------+
+            |
+            |  Wi-Fi (MQTT/HTTP)
+            v
++------------------------+
+|  Firebase Realtime DB  |
++-----------+------------+
+            |
+    +-------+--------+
+    |                |
+    v                v
++---------+    +-------------+
+| ML API  |    | Alert Engine|
+| (Flask) |    | (Twilio)    |
++----+----+    +------+------+
+     |                |
+     +-------+--------+
+             |
+             v
++-------------------------------+
+|     AetherCare Dashboard      |
+|         (Next.js)             |
+|  - User Dashboard             |
+|  - Responder Dashboard        |
++-------------------------------+
 
 
 
