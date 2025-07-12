@@ -56,38 +56,5 @@ All data is captured by the wearable and pushed to Firebase, where it's processe
 
 ---
 
-## 🧩 System Architecture
-
-Here’s a visual representation of how the entire AetherCare system works:
-
-+------------------------+
-|   Wearable Device      |
-| (ESP8266 + Sensors)    |
-+-----------+------------+
-            |
-            |  Wi-Fi (MQTT/HTTP)
-            v
-+------------------------+
-|  Firebase Realtime DB  |
-+-----------+------------+
-            |
-    +-------+--------+
-    |                |
-    v                v
-+---------+    +-------------+
-| ML API  |    | Alert Engine|
-| (Flask) |    | (Twilio)    |
-+----+----+    +------+------+
-     |                |
-     +-------+--------+
-             |
-             v
-+-------------------------------+
-|     AetherCare Dashboard      |
-|         (Next.js)             |
-|  - User Dashboard             |
-|  - Responder Dashboard        |
-+-------------------------------+
-
 
 
