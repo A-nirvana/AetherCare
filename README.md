@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🩺 AetherCare Dashboard
 
-## Getting Started
+**AetherCare** is an AI-powered, real-time health monitoring dashboard designed to work with our custom-built wearable device. Developed during the **Hacksagon National Hackathon**, this system enables proactive healthcare using **IoT + ML**, built with affordability and scalability in mind.
 
-First, run the development server:
+💡 Built for **less than ₹3000**, AetherCare tracks and analyzes critical vitals, predicts over **54+ medical conditions**, and enables **instant emergency response** — all in seconds.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🔍 Overview
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+AetherCare Dashboard provides two key interfaces:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **User Dashboard**: For individuals to monitor their real-time health data and risk status.
+- **Responder Dashboard**: For emergency teams to get live alerts, GPS location, and critical vitals when a user enters a risky state.
 
-## Learn More
+All data is captured by the wearable and pushed to Firebase, where it's processed and visualized on the dashboard.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧠 Key Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🧍 User Dashboard
+- 🔴 Real-time vitals monitoring: **Heart Rate, SpO₂, Temperature, Respiratory Rate**
+- 📊 Dynamic **Health Score** & condition classification: `Normal`, `Caution`, `Risky`
+- 🤖 ML-powered condition prediction using **LSTM**
+- 🔔 Visual indicators & health trend interface
 
-## Deploy on Vercel
+### 🚑 Responder Dashboard
+- 🚨 Instant alert when user is in critical condition
+- 📍 Live GPS + vitals stream
+- 🕒 Auto-refresh, patient sorting by severity
+- 📞 Integrated **Twilio SMS + voice alerts**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Tech Stack
+
+| Layer        | Technologies                               |
+|--------------|---------------------------------------------|
+| **Frontend** | Next.js, React, Tailwind CSS, Framer Motion |
+| **Backend**  | Node.js, Express.js                         |
+| **ML Model** | Flask (LSTM Prediction Server)              |
+| **Database** | Firebase Realtime Database                  |
+| **Alerts**   | Twilio (SMS & Voice Integration)            |
+
+---
+
+## 🧪 Hardware Components
+
+- **ESP8266** – Microcontroller with Wi-Fi
+- **MAX30102** – Heart Rate & SpO₂ sensor
+- **AD8232** – ECG Signal Acquisition
+- **DHT11** – Temperature sensor
+- **GPS Module** – Location tracking
+- **3D Printed Case** – Compact wearable enclosure
+
+---
+
+## 🧩 System Architecture
+
+Here’s a visual representation of how the entire AetherCare system works:
+
+     ┌──────────────────────┐
+     │   Wearable Device    │
+     │ (ESP8266 + Sensors)  │
+     └────────┬─────────────┘
+              │ Wi-Fi
+              ▼
+     ┌──────────────────────┐
+     │  Firebase Realtime   │
+     │      Database        │
+     └────────┬─────────────┘
+              │
+  ┌───────────▼────────────┐
+  │                        │
+  │  Backend Services      │
+  │ (Node.js + Flask ML)   │
+  └────────┬──────┬────────┘
+           │      │
+ ┌─────────▼─┐  ┌─▼──────────┐
+ │ Prediction│  │ Alert Engine│
+ │  (LSTM)   │  │ (Twilio)    │
+ └───────────┘  └────────────┘
+           │
+ ┌─────────▼────────────────────────────┐
+ │     AetherCare Dashboard (Next.js)   │
+ ├──────────────────────────────────────┤
+ │  - User View                         │
+ │  - Responder View                    │
+ └──────────────────────────────────────┘
+
+
+
