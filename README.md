@@ -1,6 +1,6 @@
-![WhatsApp Image 2025-07-12 at 21 23 08 (1)](https://github.com/user-attachments
+![WhatsApp Image 2025-07-12 at 21 23 08 (1)](https://github.com/user-attachments/assets/3cdce187-ac88-4eae-97ed-6a2fdca2db0e)
 ![WhatsApp Image 2025-07-12 at 21 21 42 (1)](https://github.com/user-attachments/assets/6bbf9632-af2b-4707-ab96-f43e53d3b995)
-/assets/3cdce187-ac88-4eae-97ed-6a2fdca2db0e)
+
 
 
 # 🩺 AetherCare Dashboard
